@@ -1,0 +1,4 @@
+.htaccess
+sftp-config*.json
+vendor
+*.phar

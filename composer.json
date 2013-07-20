@@ -1,0 +1,19 @@
+{
+    "name": "crazycodr/data-filter",
+    "description": "Used to filter out data from an enumerable source using more flexible patterns than the filter iterator spl class",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mathieu Dumoulin",
+            "email": "crazyone@crazycoders.net"
+        }
+    ],
+    "require": {
+	   "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "CrazyCodr\\": "src/"
+        }
+    }
+}
