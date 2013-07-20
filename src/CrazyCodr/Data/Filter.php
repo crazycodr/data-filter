@@ -1,6 +1,6 @@
 <?php
 
-namespace CrazyCoders\Data;
+namespace CrazyCodr\Data;
 
 /**
 * The filter class is an iterator iterator that features facilities to easily filter content of an enumerable
@@ -45,7 +45,7 @@ class Filter implements \iterator
      *
      * @access public
      */
-    public function __construct(\Traversable $datasource)
+    public function __construct($datasource = NULL)
     {
         $this->datasource = $datasource;
     }
@@ -87,16 +87,11 @@ class Filter implements \iterator
 	public function next()
 	{
         $valid = false;
-        while($valid == false && each($this->datasource) !== false)
+        do
         {
-            foreach($this->filterCallbacks as $callback)
-            {
-                if(($valid = $callback(current($this->datasource), key($this->datasource))) == false)
-                {
-                    break;
-                }
-            }
+            next($this->datasource);
         }
+        while($this->valid() && $this->shouldFilter());
 	}
 
     /**
@@ -108,7 +103,30 @@ class Filter implements \iterator
 	public function rewind()
 	{
         reset($this->datasource);
+        while($this->valid() && $this->shouldFilter())
+        {
+            $this->next();
+        }
 	}
+
+    /**
+     * Function used to analyse if the current item should be filtered out
+     * 
+     * @access protected
+     *
+     * @return mixed Value.
+     */
+    protected function shouldFilter()
+    {
+        foreach($this->filterCallbacks as $callback)
+        {
+            if(($valid = $callback(current($this->datasource), key($this->datasource))) == false)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Implentation of the Iterator SPL class for Valid(), 
@@ -120,7 +138,7 @@ class Filter implements \iterator
      */
 	public function valid()
 	{
-		return key($this->datasource) != NULL;
+		return key($this->datasource) !== NULL;
 	}
 
     /**
@@ -133,7 +151,7 @@ class Filter implements \iterator
      *
      * @return self To allow method chaining
      */
-    public function where(\callable $filterCallback)
+    public function where(\closure $filterCallback)
     {
         $this->filterCallbacks[] = $filterCallback;
         return $this;
