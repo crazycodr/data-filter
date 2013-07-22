@@ -231,6 +231,54 @@ class FunctionnalFilterTests extends PHPUnit_Framework_TestCase
 
 	}
 
+	public function testDefaultFilterType()
+	{
+		$testData = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		$datafilter = new \CrazyCodr\Data\Filter($testData);
+		$this->assertEquals(\CrazyCodr\Data\Filter::FILTER_TYPE_ALL, $datafilter->getMainFilterType());
+	}
+
+	public function testSpecificALLFilterType()
+	{
+		$testData = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		$datafilter = new \CrazyCodr\Data\Filter($testData, \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$this->assertEquals(\CrazyCodr\Data\Filter::FILTER_TYPE_ALL, $datafilter->getMainFilterType());
+	}
+
+	public function testSpecificANYFilterType()
+	{
+		$testData = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		$datafilter = new \CrazyCodr\Data\Filter($testData, \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$this->assertEquals(\CrazyCodr\Data\Filter::FILTER_TYPE_ANY, $datafilter->getMainFilterType());
+	}
+
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testInvalidFilterType()
+	{
+		$testData = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		$datafilter = new \CrazyCodr\Data\Filter($testData, -1);
+	}
+
+	public function testALLFiltersOutput()
+	{
+		$testData = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		$datafilter = new \CrazyCodr\Data\Filter($testData, \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return ($a % 2) == 0; });
+		$datafilter->where(function($a){ return $a > 5; });
+		$this->assertEquals(3, count(iterator_to_array($datafilter)));
+	}
+
+	public function testANYFiltersOutput()
+	{
+		$testData = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		$datafilter = new \CrazyCodr\Data\Filter($testData, \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$datafilter->where(function($a){ return ($a % 2) == 0; });
+		$datafilter->where(function($a){ return $a > 5; });
+		$this->assertEquals(7, count(iterator_to_array($datafilter)));
+	}
+
 }
 
 class FunctionnalMultipleFilterTests extends PHPUnit_Framework_TestCase

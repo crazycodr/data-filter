@@ -20,6 +20,16 @@ class Filter implements \iterator
 {
 
     /**
+     * Defines a filter type that applies AND to all closures of the same group
+     */
+    const FILTER_TYPE_ALL = 0;
+
+    /**
+     * Defines a filter type that applies OR to all closures of the same group
+     */
+    const FILTER_TYPE_ANY = 1;
+
+    /**
      * Contains the datasource that will be iterated over applying filtering functions to it
      *
      * @var \Traversable
@@ -29,6 +39,15 @@ class Filter implements \iterator
     protected $datasource = NULL;
 
     /**
+     * Contains the filter 
+     *
+     * @var int
+     *
+     * @access protected
+     */
+    protected $mainFilterType = self::FILTER_TYPE_ALL;
+
+    /**
      * Contains the callbacks to execute when iterating data
      * Every callback must include a $data parameter to receive data and returns a boolean stating if the filter applies
      *
@@ -36,7 +55,16 @@ class Filter implements \iterator
      *
      * @access protected
      */
-    protected $filterCallbacks = array();
+    protected $filterGroups = array();
+
+    /**
+     * Contains the types of each filter group in the filter Groups array
+     *
+     * @var \Array
+     *
+     * @access protected
+     */
+    protected $filterGroupTypes = array();
 
     /**
      * Builds the Filter using a specific datasource
@@ -45,9 +73,34 @@ class Filter implements \iterator
      *
      * @access public
      */
-    public function __construct($datasource = NULL)
+    public function __construct($datasource = NULL, $mainFilterType = self::FILTER_TYPE_ALL)
     {
+
+        //Set the datasource
         $this->datasource = $datasource;
+
+        //Set the filter type
+        $this->setMainFilterType($mainFilterType);
+
+    }
+
+    public function setMainFilterType($type)
+    {
+        if(!in_array($type, array(self::FILTER_TYPE_ALL, self::FILTER_TYPE_ANY)))
+        {
+            throw new \InvalidArgumentException('Invalid filter type, use Filter::FILTER_TYPE_ALL or Filter::FILTER_TYPE_ANY');
+        }
+        $this->mainFilterType = $type;
+    }
+
+    public function getMainFilterType()
+    {
+        return $this->mainFilterType;
+    }
+
+    public function getFilterGroupType($name)
+    {
+        return $this->filterGroupTypes[$name];
     }
 
     /**
@@ -91,7 +144,7 @@ class Filter implements \iterator
         {
             next($this->datasource);
         }
-        while($this->valid() && $this->shouldFilter());
+        while($this->valid() && $this->shouldKeep() == false);
 	}
 
     /**
@@ -103,29 +156,99 @@ class Filter implements \iterator
 	public function rewind()
 	{
         reset($this->datasource);
-        while($this->valid() && $this->shouldFilter())
+        while($this->valid() && $this->shouldKeep() == false)
         {
             $this->next();
         }
 	}
 
     /**
-     * Function used to analyse if the current item should be filtered out
+     * Function used to analyse if the current item should be kept
      * 
      * @access protected
      *
-     * @return mixed Value.
+     * @return bool Keep or not the current entry
      */
-    protected function shouldFilter()
+    protected function shouldKeep()
     {
-        foreach($this->filterCallbacks as $callback)
+
+        //Process each filter groups independantly and then combine the result to a master variable
+        $masterResult = NULL;
+        foreach($this->filterGroups as $groupName => $callbacks)
         {
-            if(($valid = $callback(current($this->datasource), key($this->datasource))) == false)
+
+            //Process the filter group
+            $result = $this->processFilterGroup($callbacks, $groupName);
+
+            //If the filter type is ALL
+            if($this->getMainFilterType() == self::FILTER_TYPE_ALL)
             {
-                return true;
+                $masterResult = ($masterResult == NULL ? $result : $masterResult && $result);
+                if($masterResult == false)
+                {
+                    //ALL is an AND operator, if masterResult is false, it will never be true, return immediately
+                    return false;
+                }
             }
+            elseif($this->getMainFilterType() == self::FILTER_TYPE_ANY)
+            {
+                $masterResult = ($masterResult == NULL ? $result : $masterResult || $result);
+                if($masterResult == true)
+                {
+                    //ANY is an OR operator, if masterResult is true, it will never be false, return immediately
+                    return true;
+                }
+            }
+
         }
-        return false;
+
+        //Return the master result in case all are TRUE in a AND scenario or all FALSE in a OR scenario
+        return $masterResult;
+
+    }
+
+    /**
+     * Processes a group of filters and return the resulting boolean value of the tests at hand
+     * 
+     * @access protected
+     *
+     * @return bool Result of the filter group
+     */
+    protected function processFilterGroup(array $filters, $name)
+    {
+
+        $masterResult = NULL;
+        foreach($filters as $filter)
+        {
+
+            //Get the results of the filter
+            $result = $filter(current($this->datasource), key($this->datasource));
+
+            //If the filter type is ALL
+            if($this->getFilterGroupType($name) == self::FILTER_TYPE_ALL)
+            {
+                $masterResult = ($masterResult == NULL ? $result : $masterResult && $result);
+                if($masterResult == false)
+                {
+                    //ALL is an AND operator, if masterResult is false, it will never be true, return immediately
+                    return false;
+                }
+            }
+            elseif($this->getFilterGroupType($name) == self::FILTER_TYPE_ANY)
+            {
+                $masterResult = ($masterResult == NULL ? $result : $masterResult || $result);
+                if($masterResult == true)
+                {
+                    //ANY is an OR operator, if masterResult is true, it will never be false, return immediately
+                    return true;
+                }
+            }
+
+        }
+
+        //Return the master result in case all are TRUE in a AND scenario or all FALSE in a OR scenario
+        return $masterResult;
+
     }
 
     /**
@@ -151,9 +274,16 @@ class Filter implements \iterator
      *
      * @return self To allow method chaining
      */
-    public function where(\closure $filterCallback)
+    public function where(\closure $filterCallback, $name = NULL)
     {
-        $this->filterCallbacks[] = $filterCallback;
+        if($name != NULL)
+        {
+            $this->filterGroups[$name][] = $filterCallback;
+        }
+        else
+        {
+            $this->filterGroups[][] = $filterCallback;
+        }
         return $this;
     }
 
@@ -164,9 +294,16 @@ class Filter implements \iterator
      *
      * @return self To allow method chaining
      */
-    public function clearFilters()
+    public function clearFilters($name = NULL)
     {
-        $this->filterCallbacks = array();
+        if($name != NULL)
+        {
+            unset($this->filterGroups[$name]);
+        }
+        else
+        {
+            $this->filterGroups = array();
+        }
         return $this;
     }
 
@@ -177,9 +314,13 @@ class Filter implements \iterator
      *
      * @return array All filters associated with this filter
      */
-    public function getFilters()
+    public function getFilters($name = NULL)
     {
-        return $this->filterCallbacks;
+        if($name != NULL)
+        {
+            return $this->filterGroups[$name];
+        }
+        return $this->filterGroups;
     }
 
 }
