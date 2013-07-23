@@ -274,11 +274,12 @@ class Filter implements \iterator
      *
      * @return self To allow method chaining
      */
-    public function where(\closure $filterCallback, $name = NULL)
+    public function where(\closure $filterCallback, $name = NULL, $filterGroupType = self::FILTER_TYPE_ALL)
     {
         if($name != NULL)
         {
             $this->filterGroups[$name][] = $filterCallback;
+            $this->filterGroupTypes[$name] = $filterGroupType;
         }
         else
         {

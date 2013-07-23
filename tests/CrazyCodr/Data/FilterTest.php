@@ -232,4 +232,60 @@ class DataTypeFilterTests extends PHPUnit_Framework_TestCase
 		$this->assertCount(7, iterator_to_array($datafilter));
 	}
 
+	public function testFilterGroupOutput1()
+	{
+		$datafilter = new \CrazyCodr\Data\Filter($this->ArrayOfNumbersTestData, \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$datafilter->where(function($a){ return ($a % 2) == 0; });
+		$datafilter->where(function($a){ return $a > 5; }, 'rangeGroup');
+		$datafilter->where(function($a){ return $a < 10; }, 'rangeGroup');
+		$this->assertCount(7, iterator_to_array($datafilter));
+	}
+
+	public function testFilterGroupOutput2()
+	{
+		$datafilter = new \CrazyCodr\Data\Filter($this->ArrayOfNumbersTestData, \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return ($a % 2) == 0; });
+		$datafilter->where(function($a){ return $a > 5; }, 'rangeGroup');
+		$datafilter->where(function($a){ return $a < 10; }, 'rangeGroup');
+		$this->assertCount(2, iterator_to_array($datafilter));
+	}
+
+	public function testFilterGroupOutput3()
+	{
+		$datafilter = new \CrazyCodr\Data\Filter($this->ArrayOfNumbersTestData, \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return ($a % 4) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$datafilter->where(function($a){ return ($a % 3) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$this->assertCount(5, iterator_to_array($datafilter));
+	}
+
+	public function testFilterGroupOutput4()
+	{
+		$datafilter = new \CrazyCodr\Data\Filter($this->ArrayOfNumbersTestData, \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return ($a % 4) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$datafilter->where(function($a){ return ($a % 3) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$datafilter->where(function($a){ return $a > 5; }, 'rangeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return $a < 9; }, 'rangeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$this->assertCount(2, iterator_to_array($datafilter));
+	}
+
+	public function testFilterGroupOutput5()
+	{
+		$datafilter = new \CrazyCodr\Data\Filter($this->ArrayOfNumbersTestData, \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return ($a % 2) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return ($a % 3) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return $a > 5; }, 'rangeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return $a < 9; }, 'rangeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$this->assertCount(1, iterator_to_array($datafilter));
+	}
+
+	public function testFilterGroupOutput6()
+	{
+		$datafilter = new \CrazyCodr\Data\Filter($this->ArrayOfNumbersTestData, \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+		$datafilter->where(function($a){ return ($a % 2) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return ($a % 3) == 0; }, 'moduloGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return $a > 1; }, 'rangeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$datafilter->where(function($a){ return $a < 3; }, 'rangeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ALL);
+		$this->assertCount(2, iterator_to_array($datafilter));
+	}
+
 }
