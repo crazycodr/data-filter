@@ -2,12 +2,12 @@
 include('../vendor/autoload.php');
 
 class CrazyCodr_Data_Filter_Example1_Mock {
-	public $id;
+	public $year;
 	public $make;
 	public $model;
 	public $type;
-	public function __construct($id, $make, $model, $type){
-		$this->id = $id;
+	public function __construct($year, $make, $model, $type){
+		$this->year = $year;
 		$this->make = $make;
 		$this->model = $model;
 		$this->type = $type;
@@ -24,16 +24,11 @@ $data = array(
 	new CrazyCodr_Data_Filter_Example1_Mock(2011, 'Hyundai', 'Genesis', 'Intermediate'),
 );
 $filteredData = new \CrazyCodr\Data\Filter($data);
-$filteredData->where(new \CrazyCodr\Data\FilterGroup());
+$filteredData->where(function($a){ return $a->year == 2012; });
+$filteredData->where(function($a){ return $a->type == 'SUV'; }, 'typeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
+$filteredData->where(function($a){ return $a->type == 'Compact'; }, 'typeGroup', \CrazyCodr\Data\Filter::FILTER_TYPE_ANY);
 foreach($filteredData as $data)
 {
-	$filterOutThisName = $data->model;
-	$filteredData->where(
-		function($data)use($filterOutThisName){
-			echo 'Filtering on '.$filterOutThisName.'<br>';
-			return $data->model != $filterOutThisName; 
-		}
-	);
 	var_dump($data);
 	echo '<br>';
 }
