@@ -11,7 +11,7 @@ namespace CrazyCodr\Data\Filter;
 * @license  MIT
 * @link     crazycoders.net
 */
-class FilterGroup implements FilterInterface, FilterContainer
+class FilterGroup implements FilterInterface, FilterContainerInterface
 {
 
     /**
@@ -53,19 +53,19 @@ class FilterGroup implements FilterInterface, FilterContainer
      * 
      * @return bool Should we keep this data, may return NULL if no filter in the container wants to speak
      */
-    function ShouldKeep($data, $key)
+    function shouldKeep($data, $key)
     {
 
         //Initialize the container of results
         $results = NULL;
         $containerType = $this->getContainerType();
 
-        //Foreach filter, call the ShouldKeep and aggregate the result into $results
+        //Foreach filter, call the shouldKeep and aggregate the result into $results
         foreach($this->filters as $filter)
         {
 
             //Get the result of the filter
-            $result = $filter->ShouldKeep($data, $key);
+            $result = $filter->shouldKeep($data, $key);
 
             //Aggregate
             if($containerType == self::CONTAINER_TYPE_ALL && ($result === true || $result === false))
@@ -73,7 +73,7 @@ class FilterGroup implements FilterInterface, FilterContainer
                 //Aggregate this result as a AND
                 $results = ($results == NULL ? $result : $results && $result);
             }
-            elsef($containerType == self::CONTAINER_TYPE_ANY && ($result === true || $result === false))
+            elseif($containerType == self::CONTAINER_TYPE_ANY && ($result === true || $result === false))
             {
                 //Aggregate this result as a OR
                 $results = ($results == NULL ? $result : $results || $result);
@@ -236,6 +236,99 @@ class FilterGroup implements FilterInterface, FilterContainer
     function getFilters()
     {
         return $this->filters;
+    }
+
+    /**
+     * Checks if a filter exists when called via an array access method
+     * 
+     * @param mixed $key Key to check if valid
+     *
+     * @access public
+     *
+     * @return bool Returns if the filter exists
+     */
+    function offsetExists($key)
+    {
+        return $this->hasFilter($key);
+    }
+
+    /**
+     * Returns a filter if it exists
+     * 
+     * @param mixed $key Key to find and return
+     *
+     * @access public
+     *
+     * @throws FilterNotFoundException
+     *
+     * @return FilterInterface Requested filter
+     */
+    function offsetGet($key)
+    {
+
+        //Check the filter exists
+        if(!$this->hasFilter($key))
+        {
+            throw new FilterNotFoundException($key);
+        }
+
+        //Return the found filter
+        return $this->filters[$key];
+
+    }
+
+    /**
+     * Returns a filter if it exists
+     * 
+     * @param mixed $key Key to find and return
+     * @param FilterInterface $value Filter to add to the collection of filters
+     *
+     * @throws InvalidArgumentException
+     *
+     * @access public
+     */
+    function offsetSet($key, $value)
+    {
+
+        //Validate the $value is a FilterInterface, cannot use type hint as it breaks ArrayAccess interface implementation
+        if(!($value instanceof FilterInterface))
+        {
+            throw new \InvalidArgumentException('$value must be a FilterInterface object');
+        }
+
+        //Set the filter into the container
+        if($this->hasFilter($key))
+        {
+            $this->setFilter($value, $key);
+        }
+        else
+        {
+            $this->addFilter($value, $key);
+        }
+
+    }
+
+    /**
+     * Destroys an existing filter if found
+     * 
+     * @param mixed $key Key to destroy
+     *
+     * @access public
+     *
+     * @throws FilterNotFoundException
+     */
+    function offsetUnset($key)
+    {
+
+        //Check the filter exists
+        if(!$this->hasFilter($key))
+        {
+            throw new FilterNotFoundException($key);
+        }
+
+        //Remove the filter
+        $this->removeFilter($key);
+
     }
 
 }

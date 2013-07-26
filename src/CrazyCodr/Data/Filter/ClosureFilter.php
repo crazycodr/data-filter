@@ -69,7 +69,7 @@ class ClosureFilter implements FilterInterface
      *
      * @return bool Should we keep this data
      */
-	public function ShouldKeep($data, $key)
+	public function shouldKeep($data, $key)
      {
           $closure = $this->getClosure();
           return $closure($data, $key);

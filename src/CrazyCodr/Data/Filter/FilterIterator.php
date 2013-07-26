@@ -40,12 +40,14 @@ class FilterIterator implements \iterator, FilterContainerInterface
     /**
      * Builds the FilterIterator using a specific datasource
      *
-     * @param \Traversable $datasource Contains the datasource that will be iterated and filtered
      * @param FilterContainerInterface Filter container that will be proxied to store first level filters
+     * @param \Traversable $datasource Contains the datasource that will be iterated and filtered
+     *
+     * @throws \InvalidArgumentException If $datasource is not an array or traversable
      *
      * @access public
      */
-    public function __construct(\Traversable $datasource = NULL, FilterContainerInterface $filterContainer = NULL)
+    public function __construct(FilterContainerInterface $filterContainer, $datasource = NULL)
     {
 
         //Set the datasource
@@ -54,6 +56,71 @@ class FilterIterator implements \iterator, FilterContainerInterface
         //Set the filter container
         $this->setFilterContainer($filterContainer);
 
+    }
+
+    /**
+     * Sets the datasource to be used in the iteration context
+     * 
+     * @param \Traversable $datasource Datasource to be used in iteration context
+     *
+     * @throws \InvalidArgumentException If $datasource is not an array or traversable
+     *
+     * @access public
+     */
+    public function setDatasource($datasource = NULL)
+    {
+
+        //If there are no datasource, set it to an empty array
+        if($datasource === NULL)
+        {
+            $datasource = array();
+        }
+
+        //Validate
+        if(!is_array($datasource) && !($datasource instanceof \Traversable))
+        {
+            throw new \InvalidArgumentException('Datasource must be either an array or \\Traversable');
+        }
+
+        //Save the datasource
+        $this->datasource = $datasource;
+        
+    }
+
+    /**
+     * Returns the current datasource used in the iteration context
+     * 
+     * @access public
+     *
+     * @return \Traversable Datasource used in the iteration context
+     */
+    public function getDatasource()
+    {
+        return $this->datasource;
+    }
+
+    /**
+     * Sets the filterContainer to be used in the filter storage context
+     * 
+     * @param FilterContainerInterface $filterContainer FilterContainer to use in this iterator
+     *
+     * @access public
+     */
+    public function setFilterContainer(FilterContainerInterface $filterContainer = NULL)
+    {
+        $this->filterContainer = $filterContainer;
+    }
+
+    /**
+     * Returns the current filterContainer used in the filter storage context
+     * 
+     * @access public
+     *
+     * @return FilterContainerInterface FilterContainer used in the filter storage context
+     */
+    public function getFilterContainer()
+    {
+        return $this->filterContainer;
     }
 
     /**
@@ -97,7 +164,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
         {
             next($this->datasource);
         }
-        while($this->valid() && $this->shouldKeep() == false);
+        while($this->valid() && $this->shouldKeep($this->current(), $this->key()) == false);
 	}
 
     /**
@@ -106,14 +173,26 @@ class FilterIterator implements \iterator, FilterContainerInterface
      * 
      * @access public
      */
-	public function rewind()
-	{
+    public function rewind()
+    {
         reset($this->datasource);
-        while($this->valid() && $this->shouldKeep() == false)
+        while($this->valid() && $this->shouldKeep($this->current(), $this->key()) == false)
         {
             $this->next();
         }
-	}
+    }
+
+    /**
+     * Implentation of the Iterator SPL class for Valid(), 
+     * Checks if the current item is a valid item for processing
+     * NULL keys represent an invalid item
+     * 
+     * @access public
+     */
+    public function valid()
+    {
+        return key($this->datasource) !== NULL;
+    }
 
     /**
      * When called with data and some identification key, the function should attempt to resolve
@@ -124,11 +203,11 @@ class FilterIterator implements \iterator, FilterContainerInterface
      * 
      * @return bool Should we keep this data, may return NULL if no filter in the container wants to speak
      */
-    function ShouldKeep($data, $key)
+    function shouldKeep($data, $key)
     {
 
-        //Proxy the result from ShouldKeep of filterContainer
-        $result = $this->getFilterContainer()->ShouldKeep($data, $key);
+        //Proxy the result of shouldKeep to filterContainer
+        $result = $this->getFilterContainer()->shouldKeep($data, $key);
 
         //If the result is null, set as true as abstinence at this level means we don't mind keeping it
         if($result === NULL)
@@ -232,6 +311,65 @@ class FilterIterator implements \iterator, FilterContainerInterface
     function getFilters()
     {
         return $this->getFilterContainer()->getFilters();
+    }
+
+    /**
+     * Checks if a filter exists when called via an array access method
+     * 
+     * @param mixed $key Key to check if valid
+     *
+     * @access public
+     *
+     * @return bool Returns if the filter exists
+     */
+    function offsetExists($key)
+    {
+        return $this->getFilterContainer()->offsetExists($key);
+    }
+
+    /**
+     * Returns a filter if it exists
+     * 
+     * @param mixed $key Key to find and return
+     *
+     * @access public
+     *
+     * @throws FilterNotFoundException
+     *
+     * @return FilterInterface Requested filter
+     */
+    function offsetGet($key)
+    {
+        return $this->getFilterContainer()->offsetGet($key);
+    }
+
+    /**
+     * Returns a filter if it exists
+     * 
+     * @param mixed $key Key to find and return
+     * @param FilterInterface $value Filter to add to the collection of filters
+     *
+     * @throws InvalidArgumentException
+     *
+     * @access public
+     */
+    function offsetSet($key, $value)
+    {
+        $this->getFilterContainer()->offsetSet($key, $value);
+    }
+
+    /**
+     * Destroys an existing filter if found
+     * 
+     * @param mixed $key Key to destroy
+     *
+     * @access public
+     *
+     * @throws FilterNotFoundException
+     */
+    function offsetUnset($key)
+    {
+        $this->getFilterContainer()->offsetUnset($key);
     }
 
 }

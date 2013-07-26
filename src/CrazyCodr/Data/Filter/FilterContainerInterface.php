@@ -11,7 +11,7 @@ namespace CrazyCodr\Data\Filter;
 * @license  MIT
 * @link     crazycoders.net
 */
-interface FilterContainerInterface extends ArrayAccess
+interface FilterContainerInterface extends \ArrayAccess
 {
 
     /**

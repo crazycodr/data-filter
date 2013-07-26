@@ -1,38 +1,21 @@
 <?php
 include('../vendor/autoload.php');
 
-class CrazyCodr_Data_Filter_Example1_Mock {
-	public $id;
-	public $make;
-	public $model;
-	public $type;
-	public function __construct($id, $make, $model, $type){
-		$this->id = $id;
-		$this->make = $make;
-		$this->model = $model;
-		$this->type = $type;
-	}
-}
+//Set the time limit
+set_time_limit(5);
 
-$data = array(
-	new CrazyCodr_Data_Filter_Example1_Mock(2010, 'Hyundai', 'Tucson', 'SUV'),
-	new CrazyCodr_Data_Filter_Example1_Mock(2011, 'Hyundai', 'Tucson', 'SUV'),
-	new CrazyCodr_Data_Filter_Example1_Mock(2012, 'Hyundai', 'Tucson', 'SUV'),
-	new CrazyCodr_Data_Filter_Example1_Mock(2012, 'Hyundai', 'Elantra', 'Compact'),
-	new CrazyCodr_Data_Filter_Example1_Mock(2013, 'Hyundai', 'Accent', 'SubCompact'),
-	new CrazyCodr_Data_Filter_Example1_Mock(2009, 'Hyundai', 'SantaFee', 'SUV'),
-	new CrazyCodr_Data_Filter_Example1_Mock(2011, 'Hyundai', 'Genesis', 'Intermediate'),
-);
-$filteredData = new \CrazyCodr\Data\Filter($data);
+//Setup sample data to work with
+$data = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);
+
+//Basic filter usage
+$filteredData = new \CrazyCodr\Data\Filter\FilterIterator(new \CrazyCodr\Data\Filter\FilterGroup(), $data);
+
+//Setup basic filters
+$filteredData->addFilter(new \CrazyCodr\Data\Filter\ClosureFilter(function($data, $key){
+	return ($data % 3) == 0;
+}));
+
 foreach($filteredData as $data)
 {
-	$filterOutThisName = $data->model;
-	$filteredData->where(
-		function($data)use($filterOutThisName){
-			echo 'Filtering on '.$filterOutThisName.'<br>';
-			return $data->model != $filterOutThisName; 
-		}
-	);
-	var_dump($data);
-	echo '<br>';
+	echo $data.'<br>';
 }

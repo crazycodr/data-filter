@@ -23,6 +23,6 @@ interface FilterInterface
      * 
      * @return bool Should we keep this data
      */
-	function ShouldKeep($data, $key);
+	function shouldKeep($data, $key);
 
 }
