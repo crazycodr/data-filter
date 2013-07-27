@@ -229,6 +229,29 @@ class FilterGroup implements FilterInterface, FilterContainerInterface
     }
 
     /**
+     * Returns a specific filter from the collection
+     *
+     * @param String $name Name of the filter you want to find
+     *
+     * @throws FitlerNotFoundException
+     *
+     * @return FilterInterface Filter requested
+     */
+    function getFilter($name)
+    {
+
+        //Check if the name exists
+        if($this->hasFilter($name) == false)
+        {
+            throw new FilterNotFoundException($name);
+        }
+
+        //Return the filter
+        return $this->filters[$name];
+
+    }
+
+    /**
      * Returns the collection of filters
      *
      * @return Array Collection of all filters in the group

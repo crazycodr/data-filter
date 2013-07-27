@@ -253,7 +253,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
     function addFilter(FilterInterface $filter, $name = NULL)
     {
-        $this->getFilterContainer()->addFilter($filter, $name);
+        return $this->getFilterContainer()->addFilter($filter, $name);
     }
 
     /**
@@ -268,7 +268,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
     function setFilter(FilterInterface $filter, $name)
     {
-        $this->getFilterContainer()->setFilter($filter, $name);
+        return $this->getFilterContainer()->setFilter($filter, $name);
     }
 
     /**
@@ -280,7 +280,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
     function hasFilter($name)
     {
-        $this->getFilterContainer()->hasFilter($name);
+        return $this->getFilterContainer()->hasFilter($name);
     }
 
     /**
@@ -301,6 +301,20 @@ class FilterIterator implements \iterator, FilterContainerInterface
     function clearFilters()
     {
         $this->getFilterContainer()->clearFilters();
+    }
+
+    /**
+     * Returns a specific filter from the collection
+     *
+     * @param String $name Name of the filter you want to find
+     *
+     * @throws FitlerNotFoundException
+     *
+     * @return FilterInterface Filter requested
+     */
+    function getFilter($name)
+    {
+        return $this->getFilterContainer()->getFilter($name);
     }
 
     /**

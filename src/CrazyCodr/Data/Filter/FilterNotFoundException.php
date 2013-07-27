@@ -12,7 +12,7 @@ namespace CrazyCodr\Data\Filter;
 * @license  MIT
 * @link     crazycoders.net  
 */
-class FilterNotFoundException extends OutOfRangeException
+class FilterNotFoundException extends \OutOfRangeException
 {
 
     /**

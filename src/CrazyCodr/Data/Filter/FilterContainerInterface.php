@@ -87,6 +87,17 @@ interface FilterContainerInterface extends \ArrayAccess
     function clearFilters();
 
     /**
+     * Returns a specific filter from the collection
+     *
+     * @param String $name Name of the filter you want to find
+     *
+     * @throws FitlerNotFoundException
+     *
+     * @return FilterInterface Filter requested
+     */
+    function getFilter($name);
+
+    /**
      * Returns the collection of filters
      *
      * @return Array Collection of all filters in the group
