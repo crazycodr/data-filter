@@ -1,4 +1,7 @@
 .htaccess
+error_log
 sftp-config*.json
 vendor
 *.phar
+run-documentation
+run-tests

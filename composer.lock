@@ -745,12 +745,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/phpDocumentor2.git",
-                "reference": "78a339768057fe45184e7250ac4710791ca6f09e"
+                "reference": "e1882c724c6881181ebeab62aa06239bdf454d53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/phpDocumentor2/zipball/78a339768057fe45184e7250ac4710791ca6f09e",
-                "reference": "78a339768057fe45184e7250ac4710791ca6f09e",
+                "url": "https://api.github.com/repos/phpDocumentor/phpDocumentor2/zipball/e1882c724c6881181ebeab62aa06239bdf454d53",
+                "reference": "e1882c724c6881181ebeab62aa06239bdf454d53",
                 "shasum": ""
             },
             "require": {
@@ -814,7 +814,7 @@
                 "documentation",
                 "phpdoc"
             ],
-            "time": "2013-07-24 17:48:31"
+            "time": "2013-07-27 05:45:53"
         },
         {
             "name": "phpdocumentor/reflection",
@@ -1968,12 +1968,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Validator.git",
-                "reference": "3e70164d83166d1c4028865460a88ad474ba6ec8"
+                "reference": "47363128b1688d9a67829f7272f76b35e98d1e6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Validator/zipball/3e70164d83166d1c4028865460a88ad474ba6ec8",
-                "reference": "3e70164d83166d1c4028865460a88ad474ba6ec8",
+                "url": "https://api.github.com/repos/symfony/Validator/zipball/47363128b1688d9a67829f7272f76b35e98d1e6f",
+                "reference": "47363128b1688d9a67829f7272f76b35e98d1e6f",
                 "shasum": ""
             },
             "require": {
@@ -2020,7 +2020,7 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "http://symfony.com",
-            "time": "2013-07-21 20:19:01"
+            "time": "2013-07-27 05:01:52"
         },
         {
             "name": "symfony/yaml",
