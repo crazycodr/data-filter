@@ -1,0 +1,1305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0b8&#10;">
+  <file path="FilterGroup.php" generated-path="FilterGroup.html" hash="52d568340f99d79bacc8613f26dc71b5" package="">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+    </docblock>
+    <class final="false" abstract="false" namespace="CrazyCodr\Data\Filter" line="24" package="\CrazyCodr/Data-Filter">
+      <extends/>
+      <implements>\CrazyCodr\Data\Filter\FilterInterface</implements>
+      <implements>\CrazyCodr\Data\Filter\FilterContainerInterface</implements>
+      <name>FilterGroup</name>
+      <full_name>\CrazyCodr\Data\Filter\FilterGroup</full_name>
+      <docblock line="24">
+        <description>This class represents a group of filters and is the base and probably unique
+and only class you will ever need to process groups of filters.</description>
+        <long-description>When applied a CONTAINER_TYPE_ANY, this class acts like a group of wildcard
+filters allowing anything that passes one of the tests into it. Think "OR"
+when you think ANY while the default "ALL" is the equivalent of "AND".
+
+Note that a FilterGroup is a FilterInterface too, this means you can put
+a FilterGroup into another FilterGroup and create multiple test groups.
+When doing so, unless you want to segment your concrete classes of filters,
+there isn't much use of not putting the main FilterGroup in ANY mode.</long-description>
+        <tag name="category" description="Filter organisation" line="24"/>
+        <tag name="package" description="CrazyCodr/Data-Filter" line="24"/>
+        <tag name="author" description="CrazyOne@CrazyCoders" line="24"/>
+        <tag name="license" description="MIT" line="24" link="http://opensource.org/licenses/MIT"/>
+        <tag name="link" description="crazycoders.net" line="24"/>
+      </docblock>
+      <property static="false" visibility="protected" line="34" namespace="CrazyCodr\Data\Filter" package="\CrazyCodr/Data-Filter">
+        <name>$filters</name>
+        <default>array()</default>
+        <docblock line="34">
+          <description>Contains the filters of the group</description>
+          <long-description></long-description>
+          <tag name="var" description="" line="34" type="array" variable="">
+            <type>array</type>
+          </tag>
+          <tag name="access" description="protected" line="34"/>
+        </docblock>
+      </property>
+      <property static="false" visibility="protected" line="43" namespace="CrazyCodr\Data\Filter" package="\CrazyCodr/Data-Filter">
+        <name>$filterType</name>
+        <default>self::CONTAINER_TYPE_ALL</default>
+        <docblock line="43">
+          <description>Contains the filter type of the group</description>
+          <long-description></long-description>
+          <tag name="var" description="" line="43" type="int" variable="">
+            <type>int</type>
+          </tag>
+          <tag name="access" description="protected" line="43"/>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="52" package="\CrazyCodr/Data-Filter">
+        <name>__construct</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::__construct()</full_name>
+        <docblock line="52">
+          <description>Builds a new filter group with a default filtering method of ALL</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Type of filtering to use on the container&lt;/p&gt;" line="52" type="int" variable="$filterType">
+            <type>int</type>
+          </tag>
+          <tag name="access" description="public" line="52"/>
+        </docblock>
+        <argument line="0">
+          <name>$filterType</name>
+          <default>self::CONTAINER_TYPE_ALL</default>
+          <type>int</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="66" package="\CrazyCodr/Data-Filter">
+        <name>shouldKeep</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::shouldKeep()</full_name>
+        <docblock line="66">
+          <description>When called with data and some identification key, the function should attempt to resolve
+some kind of filtering decision operation and return if yes or no the current data should be kept</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Data to be used in the filtering operation&lt;/p&gt;" line="66" type="mixed" variable="$data">
+            <type>mixed</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Identification key to be used in the filtering operation&lt;/p&gt;" line="66" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="return" description="Should we keep this data, may return NULL if no filter in the container wants to speak" line="66" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$data</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="116" package="\CrazyCodr/Data-Filter">
+        <name>getContainerType</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::getContainerType()</full_name>
+        <docblock line="116">
+          <description>Returns the container type of the filter container</description>
+          <long-description></long-description>
+          <tag name="return" description="CONTAINER_TYPE_* of the filter container" line="116" type="int">
+            <type>int</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="126" package="\CrazyCodr/Data-Filter">
+        <name>setContainerType</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::setContainerType()</full_name>
+        <docblock line="126">
+          <description>Used to set the container type of the filter container</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;CONTAINER_TYPE_* of the filter container&lt;/p&gt;&#10;" line="126" type="int" variable="$type">
+            <type>int</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$type</name>
+          <default></default>
+          <type>int</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="146" package="\CrazyCodr/Data-Filter">
+        <name>addFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::addFilter()</full_name>
+        <docblock line="146">
+          <description>Adds a filter with $name to the container
+If the $name is not set, a new automatic index is used</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Filter to add to the container for later processing&lt;/p&gt;" line="146" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$filter">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;If null (Default) will simply add the filter with a new key, else tries to add the current filter with the new filter&lt;/p&gt;&#10;" line="146" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown when a filter already exists with that $name" line="146" type="\CrazyCodr\Data\Filter\FilterAlreadyExistsException">
+            <type>\CrazyCodr\Data\Filter\FilterAlreadyExistsException</type>
+          </tag>
+          <tag name="return" description="Index/Name of the added filter" line="146" type="string">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$filter</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+        <argument line="0">
+          <name>$name</name>
+          <default>NULL</default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="183" package="\CrazyCodr/Data-Filter">
+        <name>setFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::setFilter()</full_name>
+        <docblock line="183">
+          <description>Replaces a filter with $name</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Filter to add to the container for later processing&lt;/p&gt;" line="183" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$filter">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Name of the filter to replace&lt;/p&gt;" line="183" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown when the requested filter name was not found in the collection" line="183" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+          <tag name="return" description="Index/Name of the added/set filter" line="183" type="string">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$filter</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="207" package="\CrazyCodr/Data-Filter">
+        <name>hasFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::hasFilter()</full_name>
+        <docblock line="207">
+          <description>Finds if a filter exists in this collection</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="207" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="return" description="Does the filter exist in the collection" line="207" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="219" package="\CrazyCodr/Data-Filter">
+        <name>removeFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::removeFilter()</full_name>
+        <docblock line="219">
+          <description>Removes a filter with $name</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="219" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown when the requested filter name was not found in the collection" line="219" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="236" package="\CrazyCodr/Data-Filter">
+        <name>clearFilters</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::clearFilters()</full_name>
+        <docblock line="236">
+          <description>Clears the collection of filters</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="250" package="\CrazyCodr/Data-Filter">
+        <name>getFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::getFilter()</full_name>
+        <docblock line="250">
+          <description>Returns a specific filter from the collection</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="250" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown when the requested filter name was not found in the collection" line="250" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+          <tag name="return" description="Filter requested" line="250" type="\CrazyCodr\Data\Filter\FilterInterface">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="269" package="\CrazyCodr/Data-Filter">
+        <name>getFilters</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::getFilters()</full_name>
+        <docblock line="269">
+          <description>Returns the collection of filters</description>
+          <long-description></long-description>
+          <tag name="return" description="Collection of all filters in the group" line="269" type="Array">
+            <type>Array</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="283" package="\CrazyCodr/Data-Filter">
+        <name>offsetExists</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::offsetExists()</full_name>
+        <docblock line="283">
+          <description>Checks if a filter exists when called via an array access method</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to check if valid&lt;/p&gt;" line="283" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="283"/>
+          <tag name="return" description="Returns if the filter exists" line="283" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="299" package="\CrazyCodr/Data-Filter">
+        <name>offsetGet</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::offsetGet()</full_name>
+        <docblock line="299">
+          <description>Returns a filter if it exists</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to find and return&lt;/p&gt;" line="299" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="299"/>
+          <tag name="throws" description="Thrown when the requested filter name was not found in the collection" line="299" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+          <tag name="return" description="Requested filter" line="299" type="\CrazyCodr\Data\Filter\FilterInterface">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="323" package="\CrazyCodr/Data-Filter">
+        <name>offsetSet</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::offsetSet()</full_name>
+        <docblock line="323">
+          <description>Returns a filter if it exists</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to find and return&lt;/p&gt;" line="323" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Filter to add to the collection of filters&lt;/p&gt;" line="323" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$value">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="throws" description="Thrown when the $value is not of type FilterInterface" line="323" type="\CrazyCodr\Data\Filter\InvalidArgumentException">
+            <type>\CrazyCodr\Data\Filter\InvalidArgumentException</type>
+          </tag>
+          <tag name="access" description="public" line="323"/>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <argument line="0">
+          <name>$value</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="353" package="\CrazyCodr/Data-Filter">
+        <name>offsetUnset</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterGroup::offsetUnset()</full_name>
+        <docblock line="353">
+          <description>Destroys an existing filter if found</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to destroy&lt;/p&gt;" line="353" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="353"/>
+          <tag name="throws" description="Thrown when the requested filter name was not found in the collection" line="353" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+    </class>
+    <source>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</source>
+  </file>
+  <file path="FilterInterface.php" generated-path="FilterInterface.html" hash="b0fac04101533898cee626482337fc48" package="">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+    </docblock>
+    <interface namespace="CrazyCodr\Data\Filter" line="14" package="\CrazyCodr/Data-Filter">
+      <name>FilterInterface</name>
+      <full_name>\CrazyCodr\Data\Filter\FilterInterface</full_name>
+      <docblock line="14">
+        <description>This interface dictates what a filter should be able to do naturaly</description>
+        <long-description></long-description>
+        <tag name="category" description="Interfaces" line="14"/>
+        <tag name="package" description="CrazyCodr/Data-Filter" line="14"/>
+        <tag name="author" description="CrazyOne@CrazyCoders" line="14"/>
+        <tag name="license" description="MIT" line="14" link="http://opensource.org/licenses/MIT"/>
+        <tag name="link" description="crazycoders.net" line="14"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="26" package="\CrazyCodr/Data-Filter">
+        <name>shouldKeep</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterInterface::shouldKeep()</full_name>
+        <docblock line="26">
+          <description>When called with data and some identification key, the function should attempt to resolve
+some kind of filtering decision operation and return if yes or no the current data should be kept</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Data to be used in the filtering operation&lt;/p&gt;" line="26" type="mixed" variable="$data">
+            <type>mixed</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Identification key to be used in the filtering operation&lt;/p&gt;" line="26" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="return" description="Should we keep this data" line="26" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$data</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+    </interface>
+    <source>eJyVkkFr3DAQhc81+D+8Qw7tkmR/QAsNJBSWEnJIIJdcZqXxWliWjCRn45b8945krxdaeohPRn7zzXtP/vZ9aIe6qitHPceBFOM20K/p1uvwckeJXn4Ymzh8zZrtZlNXGzy1JsI4OW2yXhuVKHHEsaUEQlMGEFs/Wo09g/aWkTy0h6M0BrKTYDLpRsngwYcJuxMulnMx0tGBcTazzWauZjNFQmNqfcAieXB8c9JymCHWKHZRIPe7p+XAdciPykpVlNeOk3zc1tU50bxltVRXv3P6PFgaKIgNnlt2UGQtaxxNaqHFIchpRN8zjGaXTGMkovEOHU+XSC2jGZ0qJ0tBlBL3Q8oFBY7evvK6oXA6I0TfLLUad4BmZWIm+IHDTM9bA0u3DqbBJJch1ThfFqoxBLEy2zvfSsdDWjetL9J8oB69eZNUF2UkF5/dycwY5dS4OcfqZ7XxH4pEB3b/1PFB5hm+BN17b/E45znmPDwIRH7N7Pqklnv99FfjP0X4uUS7LN6+lH/7/Q93CPko</source>
+  </file>
+  <file path="FilterContainerInterface.php" generated-path="FilterContainerInterface.html" hash="88a1722d7a7776d7e4fd1b8026eb059d" package="">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+    </docblock>
+    <interface namespace="CrazyCodr\Data\Filter" line="14" package="\CrazyCodr/Data-Filter">
+      <extends>\ArrayAccess</extends>
+      <name>FilterContainerInterface</name>
+      <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface</full_name>
+      <docblock line="14">
+        <description>This interface dictates what a filter container should be able to do naturaly</description>
+        <long-description></long-description>
+        <tag name="category" description="Interfaces" line="14"/>
+        <tag name="package" description="CrazyCodr/Data-Filter" line="14"/>
+        <tag name="author" description="CrazyOne@CrazyCoders" line="14"/>
+        <tag name="license" description="MIT" line="14" link="http://opensource.org/licenses/MIT"/>
+        <tag name="link" description="crazycoders.net" line="14"/>
+      </docblock>
+      <constant namespace="CrazyCodr\Data\Filter" line="20" package="\CrazyCodr/Data-Filter">
+        <name>CONTAINER_TYPE_ALL</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::CONTAINER_TYPE_ALL</full_name>
+        <value>0</value>
+        <docblock line="20">
+          <description>Defines the ALL filter type for filtering operations</description>
+          <long-description></long-description>
+        </docblock>
+      </constant>
+      <constant namespace="CrazyCodr\Data\Filter" line="25" package="\CrazyCodr/Data-Filter">
+        <name>CONTAINER_TYPE_ANY</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::CONTAINER_TYPE_ANY</full_name>
+        <value>1</value>
+        <docblock line="25">
+          <description>Defines the ANY filter type for filtering operation</description>
+          <long-description></long-description>
+        </docblock>
+      </constant>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="32" package="\CrazyCodr/Data-Filter">
+        <name>getContainerType</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::getContainerType()</full_name>
+        <docblock line="32">
+          <description>Used to set the container type of the filter container</description>
+          <long-description></long-description>
+          <tag name="return" description="CONTAINER_TYPE_* of the filter container" line="32" type="int">
+            <type>int</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="39" package="\CrazyCodr/Data-Filter">
+        <name>setContainerType</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::setContainerType()</full_name>
+        <docblock line="39">
+          <description>Used to set the container type of the filter container</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;CONTAINER_TYPE_* of the filter container&lt;/p&gt;&#10;" line="39" type="int" variable="$type">
+            <type>int</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$type</name>
+          <default></default>
+          <type>int</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="52" package="\CrazyCodr/Data-Filter">
+        <name>addFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::addFilter()</full_name>
+        <docblock line="52">
+          <description>Adds a filter with $name to the container
+If the $name is not set, a new automatic index is created and used</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Filter to add to the container for later processing&lt;/p&gt;" line="52" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$filter">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;If null (Default) will simply add the filter with a new key, else tries to add the current filter with the new filter&lt;/p&gt;&#10;" line="52" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="" line="52" type="\CrazyCodr\Data\Filter\FilterAlreadyExistsException">
+            <type>\CrazyCodr\Data\Filter\FilterAlreadyExistsException</type>
+          </tag>
+          <tag name="return" description="Index/Name of the added filter" line="52" type="string">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$filter</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+        <argument line="0">
+          <name>$name</name>
+          <default>NULL</default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="64" package="\CrazyCodr/Data-Filter">
+        <name>setFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::setFilter()</full_name>
+        <docblock line="64">
+          <description>Replaces a filter with $name</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Filter to add to the container for later processing&lt;/p&gt;" line="64" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$filter">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Name of the filter to replace&lt;/p&gt;" line="64" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="" line="64" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+          <tag name="return" description="Index/Name of the added/set filter" line="64" type="string">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$filter</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="73" package="\CrazyCodr/Data-Filter">
+        <name>hasFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::hasFilter()</full_name>
+        <docblock line="73">
+          <description>Finds if a filter exists in this collection</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="73" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="return" description="Does the filter exist in the collection" line="73" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="82" package="\CrazyCodr/Data-Filter">
+        <name>removeFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::removeFilter()</full_name>
+        <docblock line="82">
+          <description>Removes a filter with $name</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="82" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="" line="82" type="\CrazyCodr\Data\Filter\FitlerNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FitlerNotFoundException</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="87" package="\CrazyCodr/Data-Filter">
+        <name>clearFilters</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::clearFilters()</full_name>
+        <docblock line="87">
+          <description>Clears the collection of filters</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="98" package="\CrazyCodr/Data-Filter">
+        <name>getFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::getFilter()</full_name>
+        <docblock line="98">
+          <description>Returns a specific filter from the collection</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="98" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="" line="98" type="\CrazyCodr\Data\Filter\FitlerNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FitlerNotFoundException</type>
+          </tag>
+          <tag name="return" description="Filter requested" line="98" type="\CrazyCodr\Data\Filter\FilterInterface">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="105" package="\CrazyCodr/Data-Filter">
+        <name>getFilters</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterContainerInterface::getFilters()</full_name>
+        <docblock line="105">
+          <description>Returns the collection of filters</description>
+          <long-description></long-description>
+          <tag name="return" description="Collection of all filters in the group" line="105" type="Array">
+            <type>Array</type>
+          </tag>
+        </docblock>
+      </method>
+    </interface>
+    <source>eJzFVk1vGjEQvSPxH+aQQ4LS0p7bqEEEJCRKKkoOkSJFjneWXcXYW9tb2Fb97x3bu0uyLIEqqpITOPPx3ps3Np+/ZEnW7XQ7kq3QZIwjDDX7VQxVpO+umGV341RY1J9cTL/X63Z6sEhSA6mk09jFRym3zKKBdcIsMIh9AnAlLUslfTKJykUEDwjsQSBYBZECyWyumSiooKt5yanEUukCJlVh488J0iNbImxh9R2sdwGWD2G5TZSGMuRa4mUVizoUESlHaajI18miPJCP4P64i+Q+8r1ES//sdztbbqHLsKJSYwPcWJSRgbuB1qwYcIJLrX47lVxZr5Rv0IMrjCnXgE0QBtNppY8tMoSYcIfvqVyCylAzmyppquR++EBaGgvD69liMJmN5veL22+je1frAj58OthzdntMz6NaUqkL+Nja8sZg5GZr0Pq22/n7rir2p01zVOl1mUuNZAzp/NXs3jtUpIQe55I7RrBEW49uQSBOz/4r8oxptvLAT3zia+GbJnxftp3DICIz1ru3Tm0CJ26lHa9nnOqMSQATomihpbKu4zlVkbgGWiq1ImNwIhThxkVwjbSkETAZQU6a7VMgLM12V05KVOPShApYFO0A874UzEVkWrl9Ins2S3+33rQBNDGQuRBwSm5nubBnxJu+mnSViSL02KrtJQnUHrE4BxR0H1A1tySqDua51kgDfJrkzl1aXN44TdI20WptSnYDQSJFxWiTGmtGG47Z093acbkJfCZO4v7MkSo9QoBI6ectm/6gmND0dI/i56VQFzC7mU7bjTPHTLjLts08bz3gp4LEdW0dEB8YxEzZscpl9NoZ9N2t8PIcKOKoObQPYJy6dySNtwNAbx7aO0Lh1k4JgbydwnGiFSqHNSNbk3r0LrQsbinFg1ICrlT5cDyFE9BgC5imGgkzpRovkJ7jSv38N9O9nmTtDyte8EeTj/ZQD1MaCmTaNERyGAO+5pNe1+cuL5Q3ex6ouZ+OU8tkyNOYLuWSdKzVas9c3kq/HVM1l6K8JTT+yNHY7TPS8nofY6QgzUHZd2D5H24wfJbD6Pko8yrDL7XKs4MQq8n9+QuXnGWh</source>
+  </file>
+  <file path="ClosureFilter.php" generated-path="ClosureFilter.html" hash="494862e1d8dd9efaf0fa4050f2e7c9a0" package="">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+    </docblock>
+    <class final="false" abstract="false" namespace="CrazyCodr\Data\Filter" line="19" package="\CrazyCodr/Data-Filter">
+      <extends/>
+      <implements>\CrazyCodr\Data\Filter\FilterInterface</implements>
+      <name>ClosureFilter</name>
+      <full_name>\CrazyCodr\Data\Filter\ClosureFilter</full_name>
+      <docblock line="19">
+        <description>This class represents a filter based on a closure.</description>
+        <long-description>The closure should accept two parameters: $data and $key, both not typed.
+
+The $data parameter is usually some kind of object or array of data while
+the $key is most oftenly a scalar string value representing the id of the item.</long-description>
+        <tag name="category" description="Filter organisation" line="19"/>
+        <tag name="package" description="CrazyCodr/Data-Filter" line="19"/>
+        <tag name="author" description="CrazyOne@CrazyCoders" line="19"/>
+        <tag name="license" description="MIT" line="19" link="http://opensource.org/licenses/MIT"/>
+        <tag name="link" description="crazycoders.net" line="19"/>
+      </docblock>
+      <property static="false" visibility="protected" line="29" namespace="CrazyCodr\Data\Filter" package="\CrazyCodr/Data-Filter">
+        <name>$closure</name>
+        <default>NULL</default>
+        <docblock line="29">
+          <description>Contains the closure represented by this filtering closure</description>
+          <long-description></long-description>
+          <tag name="var" description="" line="29" type="\CrazyCodr\Data\Filter\closure" variable="">
+            <type>\CrazyCodr\Data\Filter\closure</type>
+          </tag>
+          <tag name="access" description="protected" line="29"/>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="36" package="\CrazyCodr/Data-Filter">
+        <name>__construct</name>
+        <full_name>\CrazyCodr\Data\Filter\ClosureFilter::__construct()</full_name>
+        <docblock line="36">
+          <description>Builds a new ClosureFilter by specifying the closure and options</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Closure to use while filtering data, must accept two parameters with no type hint, parameter1 $data, parameter2 $key&lt;/p&gt;&#10;" line="36" type="\Closure" variable="$closure">
+            <type>\Closure</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$closure</name>
+          <default></default>
+          <type>\Closure</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="49" package="\CrazyCodr/Data-Filter">
+        <name>setClosure</name>
+        <full_name>\CrazyCodr\Data\Filter\ClosureFilter::setClosure()</full_name>
+        <docblock line="49">
+          <description>Sets the closure used by this closure filter when filtering data
+Closure must accept two parameters with no type hint, parameter1 $data, parameter2 $key</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;\Closure Closure must accept two parameters with no type hint, parameter1 $data, parameter2 $key&lt;/p&gt;&#10;" line="49" type="mixed" variable="">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="49"/>
+        </docblock>
+        <argument line="0">
+          <name>$closure</name>
+          <default></default>
+          <type>\Closure</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="61" package="\CrazyCodr/Data-Filter">
+        <name>getClosure</name>
+        <full_name>\CrazyCodr\Data\Filter\ClosureFilter::getClosure()</full_name>
+        <docblock line="61">
+          <description>Returns the current closure used to filter data</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="61"/>
+          <tag name="return" description="Closure used to filter data" line="61" type="\Closure">
+            <type>\Closure</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="77" package="\CrazyCodr/Data-Filter">
+        <name>shouldKeep</name>
+        <full_name>\CrazyCodr\Data\Filter\ClosureFilter::shouldKeep()</full_name>
+        <docblock line="77">
+          <description>When called with data and some identification key, the function should attempt to resolve
+some kind of filtering decision operation and return if yes or no the current data should be kept</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Data to be used in the filtering operation&lt;/p&gt;" line="77" type="mixed" variable="$data">
+            <type>mixed</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Identification key to be used in the filtering operation&lt;/p&gt;" line="77" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="77"/>
+          <tag name="return" description="Should we keep this data" line="77" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$data</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+    </class>
+    <source>eJy1Vclu2zAQPdeA/2EOPqRGFrTHuotRFwWCbkCTopcAAU2NLNYSKZBUXDXIv3eGohYvSZBDfDAEcvj4+N4j5+2HMivHo/FIiwJdKSTCwop/9cIk9uqT8OLqs8o92hnXnE2n49EULjPlQObCObBYWnSovQMBaaiEpXCYgNE0InPjKountKpZiO0QuMxUeQJCSiw9+I2BUljiQAjuDUwS2hqETmCyxvoYlsZnoA0V1iUmQ7ymslsLRK1ylcjzGpwpENaKQEwKZvkHpQdjQVgrah4KKzeZypHBPIPRZoxQGEelqUdNMAKcFLmw4LxVegU3Iq+wPzkP8VoVtglfHouW4lwKjytja2h0JAIroZUTXhkdCkjztVgh9Lqfse4nTX0oEZXPiHgs+aFx3taSWKEiVxK1I5Bv55dxQK+Bf5IrZag81ehp8mw8asxbNFZEYqoocyyClc3Iuaa/lBIxHt2y+4wWEhBwp7Aw2gulXThza2snC0VgWdMUqdnkgnWKVS1EBzW/IXnvneSMEN3SGk8WYtLOnMWPbgImLY138P3X16+zlvaANwF+rFSecGA1bnZEIMquRKnSurW1ReQsmpJdcz1S/zUPCYSrCNczaQe8oVxiE7eBIpzBYygqytvBqwAbFZIfgg+Z0v64n33VpH8w8jpEuKPVKVQtKSGQVlryCeD6WtI5vK2kP9qj/DIuum1h+DdhJ0/eO/Sx/Kgrn8W6u0MhuUC/HZDKDZLRDsaXY5Oh3tGmT1ssfR6pOis7Jwv1l4h24jzz9vthD47tJX3Hx4EdT7KxvyZt9YMm/kRf2faiV9bS9d72k8IdLRx69sih+mkb8PfFfgD7PkVWvSIHBYhbbevw4OF/cyipAeTEJVjctabQX1TCPSBVMrzoELoV69R7FBudp67AoTHEwZn8pnvotvvUIP70DjlGMCXaBp13jSdQKdTouJ9x5AbGBHpx0yXhUlIfCXnTQrnpMLtl1F3p5hwdn47GPSjcO+F8T46nYT41M0tjcrhoTrvh02LZPC07YXmxd3XCmi9UfxSvJh/g8KUZXJcmN8OUzQ7FS7aP5AB6K2V3/wFvw+ju</source>
+  </file>
+  <file path="FilterNotFoundException.php" generated-path="FilterNotFoundException.html" hash="ddcdf57b39c1b1d15a79551d194dc012" package="">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+    </docblock>
+    <class final="false" abstract="false" namespace="CrazyCodr\Data\Filter" line="15" package="\CrazyCodr/Data-Filter">
+      <extends>\OutOfRangeException</extends>
+      <name>FilterNotFoundException</name>
+      <full_name>\CrazyCodr\Data\Filter\FilterNotFoundException</full_name>
+      <docblock line="15">
+        <description>This exception is raised when an operation tries to access a filter that doesn't exist in a filter container</description>
+        <long-description></long-description>
+        <tag name="uses" description="" line="15"/>
+        <tag name="category" description="Exceptions" line="15"/>
+        <tag name="package" description="CrazyCodr/Data-Filter" line="15"/>
+        <tag name="author" description="CrazyOne@CrazyCoders" line="15"/>
+        <tag name="license" description="MIT" line="15" link="http://opensource.org/licenses/MIT"/>
+        <tag name="link" description="crazycoders.net" line="15"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="25" package="\CrazyCodr/Data-Filter">
+        <name>__construct</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterNotFoundException::__construct()</full_name>
+        <docblock line="25">
+          <description>Builds a new exception</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the intended filter that failed&lt;/p&gt;" line="25" type="mixed" variable="$name">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="25"/>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+    </class>
+    <source>eJx1Uk1Lw0AQPTeQ/zCIEC3Y3lWw+AUetCAeCzJuJs1iOht2Z/EL/7uzm6YVxBxKOvPy3rw3c37Rt31ZMG4o9GgIrjx+fly52q+uUXB1azshf1YWZTGfTstiCk+tDUDvhnqxjkH/eLSBanhriQEZXE8ec0+8pQDiAI2hEAChyXQgLQrUjgJXolw2CFjet41jQcvkVS9JLmJQnvSsllGWzSPymm7GEUaQQaG18x+w64RcV1uvuCbYW5snayeDtQzBKK3zsIUsmRYjlvxA0llDHJTk/u5pW+DXPJJJSJORMyYB0Pa8LEyH6njQeHBy6yLXu8HUsxDX4R8/XynuxJ0jzypTuIy2q1OGTG/7/Hft3Yv69biBjX3XnRymxcJD+nGNxk6ac1LW1u9VNGg7qkeKPdV2b318Uf9jWc1Nhgo0kU328/ysOwvio5GjrHmsILUxmeg0xHJ6+htRDbFAAtZwUM1a2XSKsqL3sv1+Vh0AOx0tBZeuw0SfmP7cSHWs1zn5TpF9/wDH0+M1</source>
+  </file>
+  <file path="FilterIterator.php" generated-path="FilterIterator.html" hash="81bb93c2443041f5b453e531de9c5ac1" package="">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+    </docblock>
+    <class final="false" abstract="false" namespace="CrazyCodr\Data\Filter" line="27" package="\CrazyCodr/Data-Filter">
+      <extends/>
+      <implements>\iterator</implements>
+      <implements>\CrazyCodr\Data\Filter\FilterContainerInterface</implements>
+      <name>FilterIterator</name>
+      <full_name>\CrazyCodr\Data\Filter\FilterIterator</full_name>
+      <docblock line="27">
+        <description>The filter iterator class is an iterator over an iterator that features
+facilities to easily filter content of an enumerable using anonymous functions/closures
+or other types of FilterInterfaces.</description>
+        <long-description>You can also use many imbricated FilterGroup objects to create trees of conditions
+that must or musn't be satisfied when filtering information.
+
+Important note, the filter iterator filters data from it's datasource in a live fashion
+it doesn't preprocess everthing. Therefore, you can add/remove filters as you read data and
+change the way the filter iterator operates.</long-description>
+        <tag name="uses" description="" line="27"/>
+        <tag name="abstract" description="" line="27"/>
+        <tag name="category" description="Base class" line="27"/>
+        <tag name="package" description="CrazyCodr/Data-Filter" line="27"/>
+        <tag name="author" description="CrazyOne@CrazyCoders" line="27"/>
+        <tag name="license" description="MIT" line="27" link="http://opensource.org/licenses/MIT"/>
+        <tag name="link" description="crazycoders.net" line="27"/>
+      </docblock>
+      <property static="false" visibility="protected" line="37" namespace="CrazyCodr\Data\Filter" package="\CrazyCodr/Data-Filter">
+        <name>$datasource</name>
+        <default>NULL</default>
+        <docblock line="37">
+          <description>Contains the datasource that will be iterated over applying filtering functions to it</description>
+          <long-description></long-description>
+          <tag name="var" description="" line="37" type="\Traversable" variable="">
+            <type>\Traversable</type>
+          </tag>
+          <tag name="access" description="protected" line="37"/>
+        </docblock>
+      </property>
+      <property static="false" visibility="protected" line="46" namespace="CrazyCodr\Data\Filter" package="\CrazyCodr/Data-Filter">
+        <name>$container</name>
+        <default>NULL</default>
+        <docblock line="46">
+          <description>Contains the filter container used to contain the filters for this filter iterator</description>
+          <long-description></long-description>
+          <tag name="var" description="" line="46" type="\CrazyCodr\Data\Filter\FilterContainerInterface" variable="">
+            <type>\CrazyCodr\Data\Filter\FilterContainerInterface</type>
+          </tag>
+          <tag name="access" description="protected" line="46"/>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="58" package="\CrazyCodr/Data-Filter">
+        <name>__construct</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::__construct()</full_name>
+        <docblock line="58">
+          <description>Builds the FilterIterator using a specific datasource</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Filter container that will be proxied to store first level filters&lt;/p&gt;" line="58" type="\CrazyCodr\Data\Filter\FilterContainerInterface" variable="">
+            <type>\CrazyCodr\Data\Filter\FilterContainerInterface</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Contains the datasource that will be iterated and filtered&lt;/p&gt;" line="58" type="\Traversable" variable="$datasource">
+            <type>\Traversable</type>
+          </tag>
+          <tag name="throws" description="Thrown if $datasource is not an array or traversable" line="58" type="\InvalidArgumentException">
+            <type>\InvalidArgumentException</type>
+          </tag>
+          <tag name="access" description="public" line="58"/>
+        </docblock>
+        <argument line="0">
+          <name>$filterContainer</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterContainerInterface</type>
+        </argument>
+        <argument line="0">
+          <name>$datasource</name>
+          <default>NULL</default>
+          <type>\Traversable</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="78" package="\CrazyCodr/Data-Filter">
+        <name>setDatasource</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::setDatasource()</full_name>
+        <docblock line="78">
+          <description>Sets the datasource to be used in the iteration context</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Datasource to be used in iteration context&lt;/p&gt;" line="78" type="\Traversable" variable="$datasource">
+            <type>\Traversable</type>
+          </tag>
+          <tag name="throws" description="Thrown if $datasource is not an array or traversable" line="78" type="\InvalidArgumentException">
+            <type>\InvalidArgumentException</type>
+          </tag>
+          <tag name="access" description="public" line="78"/>
+        </docblock>
+        <argument line="0">
+          <name>$datasource</name>
+          <default>NULL</default>
+          <type>\Traversable</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="105" package="\CrazyCodr/Data-Filter">
+        <name>getDatasource</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::getDatasource()</full_name>
+        <docblock line="105">
+          <description>Returns the current datasource used in the iteration context</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="105"/>
+          <tag name="return" description="Datasource used in the iteration context" line="105" type="\Traversable">
+            <type>\Traversable</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="117" package="\CrazyCodr/Data-Filter">
+        <name>setFilterContainer</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::setFilterContainer()</full_name>
+        <docblock line="117">
+          <description>Sets the filterContainer to be used in the filter storage context</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;FilterContainer to use in this iterator&lt;/p&gt;" line="117" type="\CrazyCodr\Data\Filter\FilterContainerInterface" variable="$filterContainer">
+            <type>\CrazyCodr\Data\Filter\FilterContainerInterface</type>
+          </tag>
+          <tag name="access" description="public" line="117"/>
+        </docblock>
+        <argument line="0">
+          <name>$filterContainer</name>
+          <default>NULL</default>
+          <type>\CrazyCodr\Data\Filter\FilterContainerInterface</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="129" package="\CrazyCodr/Data-Filter">
+        <name>getFilterContainer</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::getFilterContainer()</full_name>
+        <docblock line="129">
+          <description>Returns the current filterContainer used in the filter storage context</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="129"/>
+          <tag name="return" description="FilterContainer used in the filter storage context" line="129" type="\CrazyCodr\Data\Filter\FilterContainerInterface">
+            <type>\CrazyCodr\Data\Filter\FilterContainerInterface</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="143" package="\CrazyCodr/Data-Filter">
+        <name>current</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::current()</full_name>
+        <docblock line="143">
+          <description>Implentation of the Iterator SPL class for Current(),
+returns the current element of the data source
+Returns null if nothing found</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="143"/>
+          <tag name="return" description="Current value of the iterator" line="143" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="157" package="\CrazyCodr/Data-Filter">
+        <name>key</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::key()</full_name>
+        <docblock line="157">
+          <description>Implentation of the Iterator SPL class for Key(),
+returns the current element's identification of the data source
+Returns null if nothing found</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="157"/>
+          <tag name="return" description="Value." line="157" type="mixed">
+            <type>mixed</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="168" package="\CrazyCodr/Data-Filter">
+        <name>next</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::next()</full_name>
+        <docblock line="168">
+          <description>Implentation of the Iterator SPL class for Next(),
+prepares the next record in line to be read and return by Current() and Key()</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="168"/>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="184" package="\CrazyCodr/Data-Filter">
+        <name>rewind</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::rewind()</full_name>
+        <docblock line="184">
+          <description>Implentation of the Iterator SPL class for Rewind(),
+prepares the whole datasource for an entirely new iterator operation</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="184"/>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="200" package="\CrazyCodr/Data-Filter">
+        <name>valid</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::valid()</full_name>
+        <docblock line="200">
+          <description>Implentation of the Iterator SPL class for Valid(),
+Checks if the current item is a valid item for processing
+NULL keys represent an invalid item</description>
+          <long-description></long-description>
+          <tag name="access" description="public" line="200"/>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="214" package="\CrazyCodr/Data-Filter">
+        <name>shouldKeep</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::shouldKeep()</full_name>
+        <docblock line="214">
+          <description>When called with data and some identification key, the function should attempt to resolve
+some kind of filtering decision operation and return if yes or no the current data should be kept</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Data to be used in the filtering operation&lt;/p&gt;" line="214" type="mixed" variable="$data">
+            <type>mixed</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Identification key to be used in the filtering operation&lt;/p&gt;" line="214" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="return" description="Should we keep this data, may return NULL if no filter in the container wants to speak" line="214" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$data</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="236" package="\CrazyCodr/Data-Filter">
+        <name>getContainerType</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::getContainerType()</full_name>
+        <docblock line="236">
+          <description>Used to set the container type of the filter container</description>
+          <long-description></long-description>
+          <tag name="return" description="CONTAINER_TYPE_* of the filter container" line="236" type="int">
+            <type>int</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="246" package="\CrazyCodr/Data-Filter">
+        <name>setContainerType</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::setContainerType()</full_name>
+        <docblock line="246">
+          <description>Used to set the container type of the filter container</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;CONTAINER_TYPE_* of the filter container&lt;/p&gt;&#10;" line="246" type="int" variable="$type">
+            <type>int</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$type</name>
+          <default></default>
+          <type>int</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="262" package="\CrazyCodr/Data-Filter">
+        <name>addFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::addFilter()</full_name>
+        <docblock line="262">
+          <description>Adds a filter with $name to the container
+If the $name is not set, a new automatic numeric index is used</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Filter to add to the container for later processing&lt;/p&gt;" line="262" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$filter">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;If null (Default) will simply add the filter with a new key, else tries to add the current filter with the new filter&lt;/p&gt;&#10;" line="262" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown if the $name already exists" line="262" type="\CrazyCodr\Data\Filter\FilterAlreadyExistsException">
+            <type>\CrazyCodr\Data\Filter\FilterAlreadyExistsException</type>
+          </tag>
+          <tag name="return" description="Index/Name of the added filter" line="262" type="string">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$filter</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+        <argument line="0">
+          <name>$name</name>
+          <default>NULL</default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="277" package="\CrazyCodr/Data-Filter">
+        <name>setFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::setFilter()</full_name>
+        <docblock line="277">
+          <description>Replaces a filter with $name</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Filter to add to the container for later processing&lt;/p&gt;" line="277" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$filter">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Name of the filter to replace&lt;/p&gt;" line="277" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown if the $name cannot be found" line="277" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+          <tag name="return" description="Index/Name of the added/set filter" line="277" type="string">
+            <type>string</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$filter</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="289" package="\CrazyCodr/Data-Filter">
+        <name>hasFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::hasFilter()</full_name>
+        <docblock line="289">
+          <description>Finds if a filter exists in this collection</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="289" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="return" description="Does the filter exist in the collection" line="289" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="301" package="\CrazyCodr/Data-Filter">
+        <name>removeFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::removeFilter()</full_name>
+        <docblock line="301">
+          <description>Removes a filter with $name</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="301" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown if the $name cannot be found" line="301" type="\CrazyCodr\Data\Filter\FitlerNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FitlerNotFoundException</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="309" package="\CrazyCodr/Data-Filter">
+        <name>clearFilters</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::clearFilters()</full_name>
+        <docblock line="309">
+          <description>Clears the collection of filters</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="323" package="\CrazyCodr/Data-Filter">
+        <name>getFilter</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::getFilter()</full_name>
+        <docblock line="323">
+          <description>Returns a specific filter from the collection</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the filter you want to find&lt;/p&gt;" line="323" type="String" variable="$name">
+            <type>String</type>
+          </tag>
+          <tag name="throws" description="Thrown if the $name cannot be found" line="323" type="\CrazyCodr\Data\Filter\FitlerNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FitlerNotFoundException</type>
+          </tag>
+          <tag name="return" description="Filter requested" line="323" type="\CrazyCodr\Data\Filter\FilterInterface">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>String</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="333" package="\CrazyCodr/Data-Filter">
+        <name>getFilters</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::getFilters()</full_name>
+        <docblock line="333">
+          <description>Returns the collection of filters</description>
+          <long-description></long-description>
+          <tag name="return" description="Collection of all filters in the group" line="333" type="Array">
+            <type>Array</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="347" package="\CrazyCodr/Data-Filter">
+        <name>offsetExists</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::offsetExists()</full_name>
+        <docblock line="347">
+          <description>Checks if a filter exists when called via an array access method</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to check if valid&lt;/p&gt;" line="347" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="347"/>
+          <tag name="return" description="Returns if the filter exists" line="347" type="bool">
+            <type>bool</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="363" package="\CrazyCodr/Data-Filter">
+        <name>offsetGet</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::offsetGet()</full_name>
+        <docblock line="363">
+          <description>Returns a filter if it exists</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to find and return&lt;/p&gt;" line="363" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="363"/>
+          <tag name="throws" description="Thrown if the $name cannot be found" line="363" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+          <tag name="return" description="Requested filter" line="363" type="\CrazyCodr\Data\Filter\FilterInterface">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="378" package="\CrazyCodr/Data-Filter">
+        <name>offsetSet</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::offsetSet()</full_name>
+        <docblock line="378">
+          <description>Returns a filter if it exists</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to find and return&lt;/p&gt;" line="378" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="param" description="&lt;p&gt;Filter to add to the collection of filters&lt;/p&gt;" line="378" type="\CrazyCodr\Data\Filter\FilterInterface" variable="$value">
+            <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+          </tag>
+          <tag name="throws" description="Thrown if the $value is not a FilterInterface" line="378" type="\CrazyCodr\Data\Filter\InvalidArgumentException">
+            <type>\CrazyCodr\Data\Filter\InvalidArgumentException</type>
+          </tag>
+          <tag name="access" description="public" line="378"/>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+        <argument line="0">
+          <name>$value</name>
+          <default></default>
+          <type>\CrazyCodr\Data\Filter\FilterInterface</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="392" package="\CrazyCodr/Data-Filter">
+        <name>offsetUnset</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterIterator::offsetUnset()</full_name>
+        <docblock line="392">
+          <description>Destroys an existing filter if found</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Key to destroy&lt;/p&gt;" line="392" type="mixed" variable="$key">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="392"/>
+          <tag name="throws" description="Thrown if the $name cannot be found" line="392" type="\CrazyCodr\Data\Filter\FilterNotFoundException">
+            <type>\CrazyCodr\Data\Filter\FilterNotFoundException</type>
+          </tag>
+        </docblock>
+        <argument line="0">
+          <name>$key</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+    </class>
+    <source>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</source>
+  </file>
+  <file path="FilterAlreadyExistsException.php" generated-path="FilterAlreadyExistsException.html" hash="fb0787ec9c7232184cb19fce8385ccc1" package="">
+    <docblock line="0">
+      <description></description>
+      <long-description></long-description>
+    </docblock>
+    <class final="false" abstract="false" namespace="CrazyCodr\Data\Filter" line="15" package="\CrazyCodr/Data-Filter">
+      <extends>\OutOfRangeException</extends>
+      <name>FilterAlreadyExistsException</name>
+      <full_name>\CrazyCodr\Data\Filter\FilterAlreadyExistsException</full_name>
+      <docblock line="15">
+        <description>This exception is raised when an operation tries to add a filter that with a name that already exists in a filter container</description>
+        <long-description></long-description>
+        <tag name="uses" description="" line="15"/>
+        <tag name="category" description="Exceptions" line="15"/>
+        <tag name="package" description="CrazyCodr/Data-Filter" line="15"/>
+        <tag name="author" description="CrazyOne@CrazyCoders" line="15"/>
+        <tag name="license" description="MIT" line="15" link="http://opensource.org/licenses/MIT"/>
+        <tag name="link" description="crazycoders.net" line="15"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="CrazyCodr\Data\Filter" line="25" package="\CrazyCodr/Data-Filter">
+        <name>__construct</name>
+        <full_name>\CrazyCodr\Data\Filter\FilterAlreadyExistsException::__construct()</full_name>
+        <docblock line="25">
+          <description>Builds a new exception</description>
+          <long-description></long-description>
+          <tag name="param" description="&lt;p&gt;Name of the intended filter that failed&lt;/p&gt;" line="25" type="mixed" variable="$name">
+            <type>mixed</type>
+          </tag>
+          <tag name="access" description="public" line="25"/>
+        </docblock>
+        <argument line="0">
+          <name>$name</name>
+          <default></default>
+          <type>mixed</type>
+        </argument>
+      </method>
+    </class>
+    <source>eJx1UlFrwkAMfrbQ/xBk4BSm724wN+dgD5swfBQku6b2sL2WuxR1w/++3NVWYawPpU2+fMn3JQ+PVVbFkcGCXIWKYG7x+zgvE7t+Qcb1q86Z7H0cxdFkNIqjEawy7YAOiirWpQH5sagdJbDPyAAaKCuyGHJsNTngEjBJACENXMAZMuw1ZxLyfZsA5pYwOQqzduxAm0uBKg2jNmSlvZ9gVjuh9c96WfMy/USzpUU7UQtSyLQt7RG6jAtxUbnDLcFF6cQrvWuUBgjWnJUWzpCloVmLJduQ5FqRcULy/rY6B8wujKQ8UgXk2BADSHoSRypH56Dp8dRIXQSl3XSinMkk7h9RP34FvkFYQ2g1guda51IhPtL+spMu3X2IaIsFFPoge7oJpn/4V5mK+SRm+86Sut5QijqnpKW4UKFSJFKq+ktMaMOisNdEIK2NCno2G1mcY1srvg09hwISGb2eTEOGp9NrxKDxJlxEAv3BOOMiF5RmuaFz/XjQ9/fWnkplyQnC34qqraf8czGDoZxu7+S9O/0CYNvuAw==</source>
+  </file>
+  <package name="global" full_name="global"/>
+  <package name="" full_name="">
+    <package name="CrazyCodr/Data-Filter" full_name="\CrazyCodr/Data-Filter"/>
+  </package>
+  <namespace name="CrazyCodr" full_name="CrazyCodr">
+    <namespace name="Data" full_name="CrazyCodr\Data">
+      <namespace name="Filter" full_name="CrazyCodr\Data\Filter"/>
+    </namespace>
+  </namespace>
+  <deprecated count="0"/>
+</project>
