@@ -14,7 +14,7 @@ class FilterIteratorTest extends PHPUnit_Framework_TestCase
         $a = new \CrazyCodr\Data\Filter\FilterGroup();
         $b = array(1,2,3,4,5);
         $c = new \CrazyCodr\Data\Filter\FilterIterator($a, $b);
-        $this->assertEquals($c->getDatasource(), $b);
+        $this->assertEquals($c->getDatasource(), new ArrayIterator($b));
     }
 
     public function testDatasourceBySetter()
@@ -23,7 +23,7 @@ class FilterIteratorTest extends PHPUnit_Framework_TestCase
         $b = array(1,2,3,4,5);
         $c = new \CrazyCodr\Data\Filter\FilterIterator($a);
         $c->setDatasource($b);
-        $this->assertEquals($c->getDatasource(), $b);
+        $this->assertEquals($c->getDatasource(), new ArrayIterator($b));
     }
 
     /**

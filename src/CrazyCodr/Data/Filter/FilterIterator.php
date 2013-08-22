@@ -84,8 +84,14 @@ class FilterIterator implements \iterator, FilterContainerInterface
             $datasource = array();
         }
 
+        //If datasouce is an array, wrap to array iterator to support iterator interface
+        if(is_array($datasource))
+        {
+            $datasource = new \ArrayIterator($datasource);
+        }
+
         //Validate
-        if(!is_array($datasource) && !($datasource instanceof \Traversable))
+        if(!($datasource instanceof \Traversable))
         {
             throw new \InvalidArgumentException('Datasource must be either an array or \\Traversable');
         }
@@ -142,7 +148,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
 	public function current()
 	{
-		return current($this->datasource);
+		return $this->datasource->current();
 	}
 
     /**
@@ -156,7 +162,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
 	public function key()
 	{
-		return key($this->datasource);
+		return $this->datasource->key();
 	}
 
     /**
@@ -170,7 +176,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
         $valid = false;
         do
         {
-            next($this->datasource);
+            $this->datasource->next();
         }
         while($this->valid() && $this->shouldKeep($this->current(), $this->key()) == false);
 	}
@@ -183,7 +189,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
     public function rewind()
     {
-        reset($this->datasource);
+        $this->datasource->rewind();
         while($this->valid() && $this->shouldKeep($this->current(), $this->key()) == false)
         {
             $this->next();
@@ -199,7 +205,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
     public function valid()
     {
-        return key($this->datasource) !== NULL;
+        return $this->datasource->key() !== NULL;
     }
 
     /**
