@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/crazycodr/data-filter.png?branch=master)](https://travis-ci.org/crazycodr/data-filter)
+
 CrazyCodr/Data/Filter
 =====================
 
