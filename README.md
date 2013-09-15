@@ -1,96 +1,208 @@
-[![Build Status](https://travis-ci.org/crazycodr/data-filter.png?branch=master)](https://travis-ci.org/crazycodr/data-filter)
-
+[![Latest Stable Version](https://poser.pugx.org/crazycodr/data-filter/version.png)](https://packagist.org/packages/crazycodr/data-filter) [![Total Downloads](https://poser.pugx.org/crazycodr/data-filter/downloads.png)](https://packagist.org/packages/crazycodr/data-filter) [![Build Status](https://travis-ci.org/crazycodr/data-filter.png?branch=master)](https://travis-ci.org/crazycodr/data-filter)
 CrazyCodr/Data/Filter
-=====================
+======================
+This package contains facilities to easily filter live iterated data from any enumerable source.
 
-This package contains facilities to easily filter data from any enumerable source.
+This class features a filtering iterator accompagnied by different filters/filter groups that you can use to filter incoming data from any iteratable data-source. With this class package, you can create simple or complex groups of filters and filters an even be modified on the fly because it is an iterator over an iterator.
 
-This class features a single filter iterator accompagnied by filter group and a closure filter adapter that you can use to filter out data as you iterate it. It offers slightly more complex features that the ones of a SPL FilterIterator in a sense that you can manage multiple filters at once, clear the lot, dynamically add new conditions to it as you go, etc.
+Table of contents
+-----------------
+1. [Installation](#installation)
+2. [Creating a basic filtering iterator](#creating-a-basic-filtering-iterator)
+3. [Supporting many filters at once](#supporting-many-filters-at-once)
+4. [Building complex filtering groups](#building-complex-filtering-groups)
+5. [Using components outside of the iterator context](#using-components-outside-of-the-iterator-context)
+6. [Creating your own testable classes](#creating-your-own-testable-classes)
 
-Why should i use it over SPL FilterIterator
--------------------------------------------
+Installation
+------------
 
-1. Every class is designed to be extended to create concrete filtering classes which makes for better TDD
-2. The iterator can be changed live (add/remove conditions/groups) to change the behavior of the iterator
-3. You can use your filters outside the scope of an iteration using $filter->shouldKeep();
+To install it, just include this requirement into your composer.json
 
-How to use
-----------
-
-1. Create a datasource that can be iterated
-2. Create ClosureFilter objects that will execute what you want to filter out
-3. Create a FilterGroup and add all filters to it
-4. Create a FilterIterator and add the datasource and filtercontainer to it
-5. Iterate, rinse, repeat...
-
-Whats next for you?
--------------------
-
-1. Download the package through composer "crazycodr/data-filter" and then look in the documentation directory of the package to know more about it, it's actually quite simple but so powerful
-2. Look at the example
-3. Try and build some tests using real life data such as CSV files
-4. Use in production
-
-A few quick examples
---------------------
-
-**Basic setup for all examples below**
-
-This code here will be used in all examples, paste it in front of each example, it will save use some display space.
-
-```PHP
-include('../vendor/autoload.php');
-use \CrazyCodr\Data\Filter as cdf;
-
-//Setup sample data to work with
-$data = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);
-
-//Create your filters, alternatively, it is better to create concrete classes, it becomes much more testable
-$oddNumbers = new cdf\ClosureFilter(function($data){ return ($data % 2) == 1; });
-$evenNumbers = new cdf\ClosureFilter(function($data){ return ($data % 2) == 0; });
-$moreThan10 = new cdf\ClosureFilter(function($data){ return $data > 10; });
-$moreThan15 = new cdf\ClosureFilter(function($data){ return $data > 15; });
-$lessThan10 = new cdf\ClosureFilter(function($data){ return $data < 10; });
-$lessThan5 = new cdf\ClosureFilter(function($data){ return $data < 5; });
-```
-
-**Basic usage**
-
-The fun aspect of this class is that you can prepare filtering closures in advance, they could be simple closures in another file that you test using unit tests. In this case, we prepare those closures in advance and add the right closures to the filtering process.
-
-```PHP
-//Basic filter setup
-$filteredData = new cdf\FilterIterator(new cdf\FilterGroup(), $data);
-
-//Display data
-$filteredData->addFilter($oddNumbers);
-foreach($filteredData as $data)
+```json
 {
-	echo $data.',';
+    "require": {
+        "crazycodr/data-filter": "2.*"
+    }
+}
+``` 
+
+And then run composer install/update as necessary.
+
+Creating a basic filtering iterator
+-----------------------------------
+
+Creating a filtering iterator requires at least three items:
+
+1. A FilterGroup used to contain the different filters for your iterator
+2. A FilterIterator used to iterate your data and provide filtering features
+3. A Filter used to detect if the current data should be kept or discarded from the iteration
+
+(Note: This code assumes that you have an array based datasource with columns: Name, Type, Sex and Age)
+
+```PHP
+//Create the male only filter
+$maleOnlyFilter = new ClosureFilter(function($a){ return $a['sex'] == 'male'; });
+$sexBasedFilter = new FilterIterator(new FilterGroup(), $data);
+$sexBasedFilter->addFilter($maleOnlyFilter);
+
+//Iterate our data source and automatically only get males
+foreach($sexBasedFilter as $employee)
+{
+	echo 'Employee: '.$employee['name'].'<br>';
 }
 ```
-Results in
-```
-1,3,5,7,9,11,13,15,17,19,
-```
 
-**Support for grouped constraints**
+Supporting many filters at once
+-------------------------------
 
-By default, the FilterIterator uses a simple FilterGroup for better extension. The FilterGroup can be set to ANY mode instead of AND mode (default) and then the conditions complement each other.
+The library supports multiple filters at once and will also respect the short-circuiting pattern. (A condition is only fully evaluated if necessary) 
+
+In this case, we have to switch the FilterGroup to "ANY" mode or else nothing will go through.
 
 ```PHP
-//You can set the filter group to use a ANY condition, by default, it uses a ALL condition
-$filteredData = new cdf\FilterIterator(new cdf\FilterGroup(cdf\FilterGroup::CONTAINER_TYPE_ANY), $data);
+//Create the male only filter and the "female is called julie"
+$maleOnlyFilter = new ClosureFilter(function($a){ return $a['sex'] == 'male'; });
+$julieFemalesOnlyFilter = new ClosureFilter(function($a){ return $a['sex'] == 'female' && $a['name'] == 'Julie'; });
+$sexBasedFilter = new FilterIterator(new FilterGroup(FilterGroup::CONTAINER_TYPE_ANY), $data);
+$sexBasedFilter->addFilter($maleOnlyFilter);
+$sexBasedFilter->addFilter($julieFemalesOnlyFilter);
 
-//Display data
-$filteredData->addFilter($oddNumbers);
-$filteredData->addFilter($moreThan15);
-foreach($filteredData as $data)
+//Iterate our data source and automatically only get males or females called Julie
+foreach($sexBasedFilter as $employee)
 {
-	echo $data.',';
+	echo 'Employee: '.$employee['name'].'<br>';
 }
 ```
-Results in
+
+Building complex filtering groups
+---------------------------------
+
+Last example showed us a closure filter that add many conditions. What if you want to explode that or combine many different closure filters in groups and sub groups such as:
+
+* MaleOf30OrLess
+  * Male Only
+  * 30 or less
+* FemaleOf30OrMore
+  * Female Only
+  * 30 or more
+
+```PHP
+//Setup the basic filters
+$maleOnlyFilter = new ClosureFilter(function($a){ return $a['sex'] == 'male'; });
+$femalesOnlyFilter = new ClosureFilter(function($a){ return $a['sex'] == 'female'; });
+$age30OrLess = new ClosureFilter(function($a){ return $a['age'] <= 30; });
+$age30OrMore = new ClosureFilter(function($a){ return $a['age'] >= 30; });
+
+//Setup the groups
+$fullMaleFilter = new FilterGroup();
+$fullFemaleFilter = new FilterGroup();
+$fullMaleFilter->addFilter($maleOnlyFilter);
+$fullMaleFilter->addFilter($age30OrLess);
+$fullFemaleFilter->addFilter($femalesOnlyFilter);
+$fullFemaleFilter->addFilter($age30OrMore);
+
+//Create the master filter
+$sexBasedFilter = new FilterIterator(new FilterGroup(FilterGroup::CONTAINER_TYPE_ANY), $data);
+$sexBasedFilter->addFilter($fullMaleFilter);
+$sexBasedFilter->addFilter($fullFemaleFilter);
+
+//Iterate our data source and automatically only get males of 30 or less or females of 30 or more
+foreach($sexBasedFilter as $employee)
+{
+	echo 'Employee: '.$employee['name'].'<br>';
+}
 ```
-1,3,5,7,9,11,13,15,16,17,18,19,20,
+The important aspect to remember is that, by default, FilterGroups are "ALL" groups and must be changed to "ANY" groups when necessary.
+
+Using components outside of the iterator context
+------------------------------------------------
+
+You don't need to use a filtering iterator... The ClosureFilter and FilterGroup can be used outside of a loop. Build conditions normally using concrete/non-concrete classes and call "shouldKeep" with some data.
+
+```PHP
+//Create the male only filter and the "female is called julie"
+$maleOnlyFilter = new ClosureFilter(function($a){ return $a['sex'] == 'male'; });
+$julieFemalesOnlyFilter = new ClosureFilter(function($a){ return $a['sex'] == 'female' && $a['name'] == 'Julie'; });
+$filter = new FilterGroup(FilterGroup::CONTAINER_TYPE_ANY);
+$filter->addFilter($maleOnlyFilter);
+$filter->addFilter($julieFemalesOnlyFilter);
+
+if($filter->shouldKeep($data))
+{
+	//Do something
+}
+```
+
+Creating your own testable classes
+----------------------------------
+
+The point of this library is not to have to create the iterators and they sub-components each time and be able
+to test the lot easily. To this end, simply create concrete extensions of your iterators and sub-components and 
+then test them.
+
+```PHP
+class MaleOnlyFilter extends ClosureFilter
+{
+	public function __construct()
+	{
+		parent::__construct(new ClosureFilter(function($a){ return $a['sex'] == 'male'; }));
+	}
+}
+```
+
+```PHP
+class FemaleOnlyFilter extends ClosureFilter
+{
+	public function __construct()
+	{
+		parent::__construct(new ClosureFilter(function($a){ return $a['sex'] == 'female'; }));
+	}
+}
+```
+
+```PHP
+class SexBasedFilterIterator extends FilterIterator
+{
+	public function __construct($data)
+	{
+		parent::__construct(new FilterGroup(), $data);
+		$this->addFilter(new MaleOnlyFilter());
+		$this->addFilter(new FemaleOnlyFilter());
+	}
+}
+```
+
+It might look extreme but this way you are creating a concrete functional class that can be reused and tested.
+Note that DataProviders are a great way to test your components but it will look strange to use a 
+DataProvider when testing the iterators.
+
+```PHP
+class MaleOnlyFilterTest extends PHPUnit_Framework_TestCase
+{
+
+	/**
+	* @dataProvider maleOnlyFilterDataProvider
+	*/
+	public function testShouldKeep($data)
+	{
+		filter = new MaleOnlyFilter();
+		$this->assertEquals($data['expected'], filter->shouldKeep($data['testdata']));
+	}
+	
+	public function maleOnlyFilterDataProvider()
+	{
+		return array(
+			array(
+				'expected' => true,
+				'testdata' => array('name' => 'John doe', 'age' => 35, 'sex' => 'male'),
+			),
+			array(
+				'expected' => false,
+				'testdata' => array('name' => 'Jone doe', 'age' => 30, 'sex' => 'female'),
+			),
+		);
+	}
+	
+}
 ```
