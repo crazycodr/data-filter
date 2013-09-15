@@ -186,8 +186,8 @@ class MaleOnlyFilterTest extends PHPUnit_Framework_TestCase
 	*/
 	public function testShouldKeep($data)
 	{
-		filter = new MaleOnlyFilter();
-		$this->assertEquals($data['expected'], filter->shouldKeep($data['testdata']));
+		$filter = new MaleOnlyFilter();
+		$this->assertEquals($data['expected'], $filter->shouldKeep($data['testdata']));
 	}
 	
 	public function maleOnlyFilterDataProvider()
