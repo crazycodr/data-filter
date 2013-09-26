@@ -146,10 +146,10 @@ class FilterIterator implements \iterator, FilterContainerInterface
      *
      * @return mixed Current value of the iterator
      */
-	public function current()
-	{
-		return $this->datasource->current();
-	}
+    public function current()
+    {
+        return $this->datasource->current();
+    }
 
     /**
      * Implentation of the Iterator SPL class for Key(), 
@@ -160,10 +160,10 @@ class FilterIterator implements \iterator, FilterContainerInterface
      *
      * @return mixed Value.
      */
-	public function key()
-	{
-		return $this->datasource->key();
-	}
+    public function key()
+    {
+        return $this->datasource->key();
+    }
 
     /**
      * Implentation of the Iterator SPL class for Next(), 
@@ -171,15 +171,15 @@ class FilterIterator implements \iterator, FilterContainerInterface
      * 
      * @access public
      */
-	public function next()
-	{
+    public function next()
+    {
         $valid = false;
         do
         {
             $this->datasource->next();
         }
         while($this->valid() && $this->shouldKeep($this->current(), $this->key()) == false);
-	}
+    }
 
     /**
      * Implentation of the Iterator SPL class for Rewind(), 
@@ -205,7 +205,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      */
     public function valid()
     {
-        return $this->datasource->key() !== NULL;
+        return $this->datasource->valid();
     }
 
     /**
