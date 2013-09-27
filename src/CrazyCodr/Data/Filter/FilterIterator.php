@@ -302,7 +302,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      *
      * @param String $name Name of the filter you want to find
      *
-     * @throws FitlerNotFoundException Thrown if the $name cannot be found
+     * @throws FilterNotFoundException Thrown if the $name cannot be found
      */
     function removeFilter($name)
     {
@@ -322,7 +322,7 @@ class FilterIterator implements \iterator, FilterContainerInterface
      *
      * @param String $name Name of the filter you want to find
      *
-     * @throws FitlerNotFoundException Thrown if the $name cannot be found
+     * @throws FilterNotFoundException Thrown if the $name cannot be found
      *
      * @return FilterInterface Filter requested
      */
